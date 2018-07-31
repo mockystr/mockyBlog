@@ -1,0 +1,2 @@
+# mockyBlog
+blog for news
