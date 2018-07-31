@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% load static %}
+{#{% load poll_extras %}#}
+{% load bootstrap %}
+
+{% block login %}
+    <style>
+        .form_boots_register p {
+            color: #555555;
+            font-size: 14px;
+        }
+    </style>
+    <div class="form_boots_register mt-5 mx-auto" style="width: 300px;">
+        <form method="post" action="/auth/register/">
+            {% csrf_token %}
+
+            {{ form|bootstrap }}
+            <div class="form-group">
+                <button type="submit" class="btn btn-info">Submit</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load poll_extras %}
+{% block title %}{{ article.article_title }}{% endblock %}
+
+{% block article %}
+
+    <div class="container">
+        <div class="mt-1">
+            <h1 style="color: #62B7B9" class="mb-0">{{ article.article_title }}</h1>
+            <small class="text-muted my-0 py-0">{{ article.article_date }}</small>
+            <p class="mt-2">{{ article.article_text }}</p>
+        </div>
+        <hr>
+
+
+        <div class="container">
+            <h3 style="color: #62B7B9">Комментарии:</h3>
+            {% if comments %}
+                {% if comments|length <= 5 %}
+                    <div id="if_length5">
+                        {% for comment in comments %}
+                            <p>{{ comment.comments_text }}</p>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div id="else_length">
+                        <button onclick="show_all()" id="show_comments" type="button"
+                                class="btn btn-outline-info w-100 mb-2">
+                            Show all comments
+                        </button>
+                        {% for comment in comments|reverse_last_five %}
+                            <p>{{ comment.comments_text }}</p>
+                        {% endfor %}
+                    </div>
+                    <div id="disp-none-first" class="d-none">
+                        {% for comment in comments %}
+                            <p>{{ comment.comments_text }}</p>
+                        {% endfor %}
+
+                    </div>
+                {% endif %}
+            {% else %}
+                <p class="text-muted">Комментариев нет</p>
+            {% endif %}
+            <hr>
+            {% if user.username %}
+                <form action="/article/addcomment/{{ article.id }}/" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input name="comment" class="form-control">
+                        <button type="button" class="btn btn-outline-info mt-2">Add comment</button>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    <script type="text/javascript">
+        function show_all(e) {
+            $("#else_length").addClass('d-none');
+            $("#disp-none-first").removeClass('d-none');
+        }
+    </script>
+{% endblock %}
