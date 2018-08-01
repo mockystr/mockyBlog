@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 
 
 def articles(request, page_number=1):
-    all_articles = Article.objects.all()
+    all_articles = Article.objects.all()[::-1]
     current_page = Paginator(all_articles, 3)
 
     return render(request, template_name='article/articles.html',
@@ -60,7 +60,7 @@ def find_article(request, page_number=1):
     if request.GET:
         if 'q' in request.GET:
             q = request.GET['q']
-            all_search_res = Article.objects.all().filter(article_title__contains=q)
+            all_search_res = Article.objects.all().filter(article_title__contains=q)[::-1]
             current_page = Paginator(all_search_res, 3)
             context = {
                 'articles': Article.objects.all(),
