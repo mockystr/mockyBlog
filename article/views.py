@@ -16,7 +16,8 @@ def articles(request, page_number=1):
     return render(request, template_name='article/articles.html',
                   context={
                       'articles': current_page.page(page_number),
-                      'user': auth.get_user(request)
+                      'user': auth.get_user(request),
+                      'cookies': request.COOKIES
                   })
 
 
@@ -38,14 +39,20 @@ def article(request, article_id=1):
 def addlike(request, article_id):
     try:
         if article_id in request.COOKIES:
-            redirect(request.META.get('HTTP_REFERER'))
+            article_obj = Article.objects.get(id=article_id)
+            article_obj.article_likes -= 1
+            article_obj.save()
+
+            responce = redirect(request.META.get('HTTP_REFERER'))
+            responce.delete_cookie(article_id)
+            return responce
         else:
             article_obj = Article.objects.get(id=article_id)
             article_obj.article_likes += 1
 
             article_obj.save()
             responce = redirect(request.META.get('HTTP_REFERER'))
-            responce.set_cookie(article_id, 'test')
+            responce.set_cookie(article_id, 'likes')
             return responce
     except ObjectDoesNotExist:
         raise Http404
