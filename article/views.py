@@ -6,6 +6,7 @@ from .forms import CommentForm
 from django.template.context_processors import csrf
 from django.contrib import auth
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
 
 
 def articles(request, page_number=1):
@@ -36,10 +37,16 @@ def article(request, article_id=1):
 
 def addlike(request, article_id):
     try:
-        article = Article.objects.get(id=article_id)
-        article.article_likes += 1
+        if article_id in request.COOKIES:
+            redirect(request.META.get('HTTP_REFERER'))
+        else:
+            article_obj = Article.objects.get(id=article_id)
+            article_obj.article_likes += 1
 
-        article.save()
+            article_obj.save()
+            responce = redirect(request.META.get('HTTP_REFERER'))
+            responce.set_cookie(article_id, 'test')
+            return responce
     except ObjectDoesNotExist:
         raise Http404
     return redirect(request.META.get('HTTP_REFERER'))
@@ -50,7 +57,9 @@ def addcomment(request, article_id):
         comment = request.POST.get("comment", "")
         if comment:
             comments_article = Article.objects.get(id=article_id)
-            comment_insert = Comment(comments_text=comment, comments_article=comments_article)
+            comments_author = request.user
+            comment_insert = Comment(comments_text=comment, comments_article=comments_article,
+                                     comments_author=comments_author)
 
             comment_insert.save()
         return redirect('/article/%s/' % article_id)

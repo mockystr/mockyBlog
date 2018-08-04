@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Article(models.Model):
     class Meta:
@@ -21,6 +21,8 @@ class Comment(models.Model):
 
     comments_text = models.TextField(verbose_name="Текст комментария")
     comments_article = models.ForeignKey('Article')
+    comments_date = models.DateField(u'date', auto_now=True)
+    comments_author = models.ForeignKey(User, default=9)
 
     def __str__(self):
         return self.comments_text + " --> " + self.comments_article.article_title

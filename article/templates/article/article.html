@@ -11,8 +11,6 @@
             <small class="text-muted my-0 py-0">{{ article.article_date }}</small>
             <p class="mt-2">{{ article.article_text }}</p>
         </div>
-        <hr>
-
 
         <div class="container">
             <h3 style="color: #62B7B9">Комментарии:</h3>
@@ -20,32 +18,40 @@
                 {% if comments|length <= 5 %}
                     <div id="if_length5">
                         {% for comment in comments %}
-                            <p>{{ comment.comments_text }}</p>
+                            <p style="margin-top: 0;margin-bottom: 0; color: #62B7B9;">{{ comment.comments_author }}</p>
+                            <p style="margin-bottom: 0;">{{ comment.comments_text }}</p>
+                            <small class="text-muted mt-0">{{ comment.comments_date }}</small>
+                            <hr style="margin-bottom: 6px;margin-top: 4px;">
                         {% endfor %}
                     </div>
                 {% else %}
                     <div id="else_length">
                         <button onclick="show_all()" id="show_comments" type="button"
                                 class="btn btn-outline-info w-100 mb-2">
-                            Show all comments
+                            Show all {{ comments|length }} comments
                         </button>
                         {% for comment in comments|reverse_last_five %}
-                            <p>{{ comment.comments_text }}</p>
+                            <p style="margin-top: 0;margin-bottom: 0; color: #62B7B9;">{{ comment.comments_author }}</p>
+                            <p style="margin-bottom: 0;">{{ comment.comments_text }}</p>
+                            <small class="text-muted mt-0">{{ comment.comments_date }}</small>
+                            <hr style="margin-bottom: 6px;margin-top: 4px;">
                         {% endfor %}
                     </div>
                     <div id="disp-none-first" class="d-none">
                         {% for comment in comments %}
-                            <p>{{ comment.comments_text }}</p>
+                            <p style="margin-top: 0;margin-bottom: 0; color: #62B7B9;">{{ comment.comments_author }}</p>
+                            <p style="margin-bottom: 0;">{{ comment.comments_text }}</p>
+                            <small class="text-muted mt-0">{{ comment.comments_date }}</small>
+                            <hr style="margin-bottom: 6px;margin-top: 4px;">
                         {% endfor %}
-
                     </div>
                 {% endif %}
             {% else %}
                 <p class="text-muted">Комментариев нет</p>
             {% endif %}
-            <hr>
+
             {% if user.username %}
-                <form action="/article/addcomment/{{ article.id }}/" method="post">
+                <form style="margin-top: 15px" action="/article/addcomment/{{ article.id }}/" method="post">
                     {% csrf_token %}
                     <div class="form-group">
                         <input name="comment" class="form-control">
