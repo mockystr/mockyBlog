@@ -1,5 +1,8 @@
 from django.conf.urls import url
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     url(r'^article/(?P<article_id>\d+)/$', views.article, name="post"),
@@ -9,3 +12,6 @@ urlpatterns = [
     url(r'^page/(\d+)/$', views.articles, name="post_with_pages"),
     url(r'^$', views.articles),
 ]
+
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += staticfiles_urlpatterns()

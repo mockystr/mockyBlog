@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Article(models.Model):
     class Meta:
         db_table = "Article"
@@ -10,6 +11,8 @@ class Article(models.Model):
     article_text = models.TextField()
     article_date = models.DateTimeField(null=True)
     article_likes = models.IntegerField(default=0)
+    article_image = models.ImageField(null=True, blank=False, upload_to="images/",
+                                      verbose_name="image")
 
     def __str__(self):
         return self.article_title

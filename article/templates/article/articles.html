@@ -26,6 +26,9 @@
                         </a>
                         {{ article.article_likes }}
                     </div>
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ article.article_image.url }}" alt="">
+                    </div>
                     <hr>
                 {% endfor %}
             </div>
@@ -63,7 +66,8 @@
                         {% endfor %}
                         {% if search_res.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="/find/{{ search_res.next_page_number }}/?q={{ q }}">&raquo;</a>
+                                <a class="page-link"
+                                   href="/find/{{ search_res.next_page_number }}/?q={{ q }}">&raquo;</a>
                             </li>
                         {% else %}
                             <li class="page-item disabled">
@@ -95,6 +99,9 @@
                             <img src='{% static "likes.png" %}' width="15" alt="likes">
                         </a>
                         {{ article.article_likes }}
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ article.article_image.url }}" alt="">
                     </div>
                     <hr>
                 {% endfor %}
