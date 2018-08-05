@@ -23,11 +23,5 @@ def get_comments_length(value):
 
 @register.filter(name='is_liked')
 def is_liked(value, cookies_val):
-    print(cookies_val)
-    print("value", value)
-    if str(value) in cookies_val:
-        print(True)
-        return True
-    else:
-        print(False)
-        return False
+    return True if str(value) in cookies_val else False
+
