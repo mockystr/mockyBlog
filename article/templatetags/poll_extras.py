@@ -1,6 +1,5 @@
 from django import template
 from ..models import Comment
-import requests
 
 register = template.Library()
 
