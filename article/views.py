@@ -38,13 +38,13 @@ def article(request, article_id=1):
 
 def addlike(request, article_id):
     try:
-        if article_id in request.COOKIES:
+        if "{0}:{1}".format(article_id, request.user.username) in request.COOKIES:
             article_obj = Article.objects.get(id=article_id)
             article_obj.article_likes -= 1
             article_obj.save()
 
             responce = redirect(request.META.get('HTTP_REFERER'))
-            responce.delete_cookie(article_id)
+            responce.delete_cookie("{0}:{1}".format(article_id, request.user.username))
             return responce
         else:
             article_obj = Article.objects.get(id=article_id)
@@ -52,7 +52,7 @@ def addlike(request, article_id):
 
             article_obj.save()
             responce = redirect(request.META.get('HTTP_REFERER'))
-            responce.set_cookie(article_id, 'likes')
+            responce.set_cookie(str(article_id) + ":" + str(request.user.username), request.user.username)
             return responce
     except ObjectDoesNotExist:
         raise Http404

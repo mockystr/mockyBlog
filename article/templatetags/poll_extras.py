@@ -20,7 +20,11 @@ def get_comments_length(value):
     return obj
 
 
+@register.filter(name='format_str')
+def format_str(value, username):
+    return "{0}:{1}".format(value, username)
+
+
 @register.filter(name='is_liked')
 def is_liked(value, cookies_val):
     return True if str(value) in cookies_val else False
-
